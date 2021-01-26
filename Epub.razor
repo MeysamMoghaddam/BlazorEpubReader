@@ -1,0 +1,457 @@
+﻿@page "/Epub"
+@namespace BlazorEpub
+
+<div class="bg-info d-flex align-items-center esidebar @sidebarClass">
+    <div class="align-middle position-absolute ecollapse-close bg-info text-white pt-3" @onclick="p => OnClickCollapse(0, true)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+        </svg>
+    </div>
+    <div class="pt-5 position-absolute @(SidebarSelectedOption == 3 ? "d-block" : "d-none")" style="top:0 !important;">
+        <h5 class="p-3 border-bottom">
+            یادداشت‌ها و هایلایت‌ها
+        </h5>
+        <div class="px-3">
+            <a class="btn btn-lg btn-primary text-white add-Annotation" @onclick="@(p => { OnClickCollapse(2, false);highlightingObject = new Highlight { CfiRange=currentCfiRange,HighlightColor="transparent",HighlightText="حاشیه‌نویسی",PageNumber=currentPageNum,IsAnnotation=true}; })">
+                حاشیه‌نویسی جدید
+            </a>
+        </div>
+
+        <div class="p-2" style="overflow-y: scroll !important; height: 500px;">
+
+            @if (Highlights.Any())
+            {
+                foreach (var item in Highlights.Where(p => p.CfiRange.Split('!')[0] == currentCfiRange.Split('!')[0] && p.PageNumber == currentPageNum).ToList())
+                {
+                    <div data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
+                        <div class="toast-header">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                            </svg>
+                            @*<img src="..." class="rounded mr-2" alt="...">*@
+                            <strong class="mr-1 @(item.HighlightColor == "transparent"?"text-dark":"text-white") px-2" style="background-color:@item.HighlightColor">@item.HighlightText</strong>
+                            @*<small>11 mins ago</small>*@
+
+                        </div>
+                        <div class="toast-body">
+                            @item.Note
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+
+
+    </div>
+
+    <div class="pt-5 position-absolute @(SidebarSelectedOption == 2?"d-block":"d-none")" style="top:0 !important;">
+        <h5 class="p-3 border-bottom">
+            رنگ هایلایت
+        </h5>
+        <div class="d-inline-flex">
+            <div data-color="blue" class="highlight-select-option ecollapse-menu bg-primary rounded-circle m-1"></div>
+            <div data-color="green" class="highlight-select-option ecollapse-menu bg-success rounded-circle m-1"></div>
+            <div data-color="red" class="highlight-select-option ecollapse-menu bg-danger rounded-circle m-1"></div>
+            <div data-color="yellow" class="highlight-select-option ecollapse-menu bg-warning rounded-circle m-1"></div>
+        </div>
+        <div class="p-3 text-center">
+            <textarea rows="4" @bind="highlightingObject.Note"></textarea>
+            <a class="btn btn-lg btn-primary text-white" @onclick="OnSendHighlightText">
+                ثبت
+            </a>
+        </div>
+    </div>
+    <div class="pt-5 position-absolute @(SidebarSelectedOption == 1?"d-block":"d-none")" style="top:0 !important;">
+        <h5 class="p-3 border-bottom text-white">
+            رنگ پس زمینه
+        </h5>
+        <div class="d-inline-flex">
+            <div data-ebgcolor="dark" class="ebackgroundcolor ecollapse-menu bg-dark rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div data-ebgcolor="secondary" class="ebackgroundcolor ecollapse-menu bg-secondary rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div data-ebgcolor="light" class="ebackgroundcolor ecollapse-menu bg-light rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div data-ebgcolor="white" class="ebackgroundcolor ecollapse-menu bg-white rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+        </div>
+        <h5 class="p-3 border-bottom text-white">
+            اندازه قلم
+        </h5>
+        <div class="d-block">
+            <div class="d-flex justify-content-center">
+                <div data-size="12" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(12)">12</div>
+                <div data-size="14" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(14)">14</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div data-size="16" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(16)">16</div>
+                <div data-size="18" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(18)">18</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div data-size="20" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(20)">20</div>
+                <div data-size="24" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(24)">24</div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div data-size="28" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(28)">28</div>
+                <div data-size="34" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(34)">34</div>
+            </div>           
+        </div>
+        <h5 class="p-3 border-bottom text-white">
+            نوع قلم
+        </h5>
+        <div class="d-block">
+            <div data-fontface="IRANSans" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("IRANSans"))">IRANSans</div>
+            <div data-fontface="Shabnam-FD" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Shabnam-FD"))">Shabnam-FD</div>
+            <div data-fontface="B NazaninB" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("B NazaninB"))">B Nazanin</div>
+            <div data-fontface="Tahoma" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Tahoma"))">Tahoma</div>
+        </div>
+    </div>
+    <div class="pt-5 position-absolute @(SidebarSelectedOption == 0?"d-block":"d-none")" style="top:0 !important;">
+        <div class="text-center" style="overflow-y: scroll !important; height: 300px;">
+            <img id="cover" src="" alt="" height="200">
+
+            <div id="book-cover">
+
+            </div>
+            <div class="pt-2">
+                <h5 id="title" class="text-dark px-2"></h5>
+                <p id="author" class="text-dark px-2"></p>
+
+
+            </div>
+        </div>
+        <ul id="toc" class="text-white px-2 pb-5"></ul>
+    </div>
+</div>
+<div id="area" class="pt-5 loading" style="height:87vh;"></div>
+<div id="spinerdiv" class="d-block">
+    <div class="spinner">
+        <div class="center-div">
+            <div class="inner-div">
+                <div class="spinnerr">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ebottom-menu fixed-bottom bg-white">
+
+    <div class="float-right p-2" id="next">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+        </svg>
+    </div>
+
+    <div class="float-left p-2" id="prev">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+        </svg>
+    </div>
+    <div class="p-2 text-center">
+        <span id="current-page">0</span>/<span id="total-page">0</span>
+    </div>
+
+</div>
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle mx-2" style="left: 1px !important; right: unset !important; " @onclick="p=>OnClickCollapse(0,false)">
+    <div class="p-2 text-white font-weight-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
+        </svg>
+    </div>
+
+</div>
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="right: unset !important; left: 60px !important;" @onclick="p=>OnClickCollapse(1,false)">
+    <div class="p-2 text-white font-weight-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+        </svg>
+    </div>
+
+</div>
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="right: unset !important; left: 110px !important;" @onclick="p=>OnClickCollapse(3,false)">
+    <div class="p-2 text-white font-weight-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="30" height="30" viewBox="0 0 840.000000 859.000000" style="padding-left: 6px;padding-bottom: 4px;" preserveAspectRatio="xMidYMid meet">
+
+            <g transform="translate(0.000000,859.000000) scale(0.100000,-0.100000)" fill="#fff" stroke="none">
+                <path d="M220 4300 l0 -4270 3130 0 3130 0 0 1140 0 1140 -282 -2 -283 -3 -3 -852 -2 -853 -2560 0 -2560 0 0 3700 0 3700 1716 0 1716 0 -3 -852 -4 -853 1133 -3 1132 -2 0 282 0 283 -228 230 c-125 127 -505 513 -846 858 l-619 627 -2283 0 -2284 0 0 -4270z m4796 3228 c120 -123 315 -320 432 -438 116 -119 212 -219 212 -223 0 -4 -196 -7 -435 -7 l-435 0 0 445 c0 245 2 445 3 445 2 0 102 -100 223 -222z" />
+                <path d="M7055 6280 c-22 -5 -66 -18 -98 -30 -53 -20 -91 -54 -450 -405 -216 -210 -947 -934 -1624 -1609 l-1231 -1226 -287 -868 c-338 -1021 -328 -992 -323 -998 6 -5 288 86 1198 387 l665 221 1410 1412 c1386 1388 1664 1673 1776 1823 87 116 101 176 78 352 -13 111 -26 138 -110 238 -104 121 -533 550 -607 605 -75 56 -143 83 -246 97 -86 12 -94 12 -151 1z m388 -867 l157 -158 -147 -147 -148 -147 -220 208 c-120 114 -221 213 -223 220 -2 6 63 76 144 155 l148 145 66 -59 c36 -32 136 -130 223 -217z m-555 -865 c-4 -10 -992 -1001 -1556 -1560 -265 -263 -489 -478 -498 -478 -10 0 -112 94 -227 209 l-210 209 22 31 c12 16 475 480 1029 1031 l1007 1000 217 -217 c120 -120 217 -221 216 -225z m-2676 -2239 c70 -72 128 -134 128 -138 0 -8 -301 -106 -357 -117 -27 -5 -33 -3 -33 11 0 46 108 375 123 375 6 0 69 -59 139 -131z" />
+                <path d="M1360 4870 l0 -280 1705 0 1705 0 0 280 0 280 -1705 0 -1705 0 0 -280z" />
+                <path d="M1360 3730 l0 -280 1135 0 1135 0 0 280 0 280 -1135 0 -1135 0 0 -280z" />
+                <path d="M1360 2595 l0 -285 855 0 855 0 -2 283 -3 282 -852 3 -853 2 0 -285z" />
+                <path d="M1360 1455 l0 -285 570 0 570 0 0 285 0 285 -570 0 -570 0 0 -285z" />
+            </g>
+        </svg>
+        @*<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+            </svg>*@
+    </div>
+
+</div>
+@code {
+    /// <summary>
+    /// آدرس فایل
+    /// </summary>
+    [Parameter]
+    public string EpubFile { get; set; }
+
+    /// <summary>
+    /// آدرس آخرین صفحه بر اساس
+    /// cfi
+    /// </summary>
+    [Parameter]
+    public string LastPageCfi { get; set; }
+
+    /// <summary>
+    /// رنگ پس زمینه
+    /// </summary>
+    [Parameter]
+    public string Background { get; set; }
+
+    /// <summary>
+    /// اندازه فونت
+    /// </summary>
+    [Parameter]
+    public string FontSize { get; set; }
+
+    /// <summary>
+    /// صورت فونت
+    /// </summary>
+    [Parameter]
+    public string FontFace { get; set; }
+
+
+    /// <summary>
+    /// لیست کل هایلایت ها بر اساس کلاس
+    /// Highlight
+    /// </summary>
+    [Parameter]
+    public List<Highlight> Highlights { get; set; } = new List<Highlight>();
+
+    //کلاس سایدبار
+    private string sidebarClass = "esidebarhide ehidesidebar";
+
+    //نمایش یا عدم نمایش سایدبار
+    private bool sidebarshow = false;
+
+    //نوع محتوا سایدبار
+    private int SidebarSelectedOption = 0;
+
+    //رنج آدرس صفحه جاری
+    private string currentCfiRange = "";
+
+    //شماره صفحه جاری
+    private int currentPageNum = 0;
+
+    private Highlight highlightingObject = new Highlight();
+    IJSObjectReference JsZipMin;
+    IJSObjectReference EpubJs;
+    IJSObjectReference Main;
+
+    #region OnCloseSideBar
+
+    private static Action OnCloseSideBarAction;
+
+
+    private void OnCloseSideBarActionHandler()
+    {
+        OnClickCollapse(0, true);
+    }
+
+    [JSInvokable]
+    public static void OnCloseSideBarFromJs()
+    {
+        OnCloseSideBarAction.Invoke();
+    }
+    #endregion
+
+    #region OnSelectText
+
+    private static Action OnSelectTextAction;
+
+
+    private void OnSelectTextActionHandler()
+    {
+        OnClickCollapse(2, false);
+    }
+
+    [JSInvokable]
+    public static void OnSelectTextFromJs()
+    {
+        OnSelectTextAction.Invoke();
+    }
+    #endregion
+
+    #region OnHighlightText
+
+    [Parameter]
+    public EventCallback<Highlight> OnHighlightText { get; set; }
+
+    [Parameter]
+    public EventCallback<Highlight> OnUpdateHighlightText { get; set; }
+
+    private static Action<Highlight> OnHighlightTextAction;
+    private void OnSendHighlightText()
+    {
+        if (highlightingObject.Id > 0)
+            OnUpdateHighlightText.InvokeAsync(highlightingObject);
+        else
+            OnHighlightText.InvokeAsync(highlightingObject);
+
+        OnClickCollapse(0, true);
+        highlightingObject = new Highlight();
+        StateHasChanged();
+    }
+
+    private void OnHighlightTextActionHandler(Highlight highlightText)
+    {
+        if (highlightingObject.Id > 0 || highlightText.IsAnnotation)
+        {
+            highlightingObject.HighlightColor = highlightText.HighlightColor;
+            highlightingObject.IsAnnotation = highlightText.IsAnnotation;
+        }
+        else
+        {
+            highlightingObject.CfiRange = highlightText.CfiRange;
+            highlightingObject.HighlightColor = highlightText.HighlightColor;
+            highlightingObject.HighlightText = highlightText.HighlightText;
+            highlightingObject.PageNumber = highlightText.PageNumber;
+
+        }
+
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public static void OnHighlightTextFromJs(string cfiRange, string color, string text, string pageHref, int currentPageNumber, bool IsAnnotation)
+    {
+        Highlight highlightTextDictionary = new Highlight
+        {
+            CfiRange = cfiRange,
+            HighlightColor = color,
+            HighlightText = text,
+            HrefBook = pageHref,
+            IsAnnotation = IsAnnotation,
+            PageNumber = currentPageNumber
+        };
+        OnHighlightTextAction.Invoke(highlightTextDictionary);
+    }
+    #endregion
+
+    #region On Navigating to the next/previous page
+    [Parameter]
+    public EventCallback<Dictionary<string, string>> OnNavigatingPage { get; set; }
+
+    private static Action<Dictionary<string, string>> OnNavigatingPageAction;
+
+
+    private void OnNavigatingPageActionHandler(Dictionary<string, string> LastPage)
+    {
+        OnNavigatingPage.InvokeAsync(LastPage);
+        currentCfiRange = LastPage.First().Key;
+        currentPageNum = int.Parse(LastPage.First().Value);
+        StateHasChanged();
+    }
+
+    [JSInvokable]
+    public static void OnNavigatingPageFromJs(string cfiRange, int page)
+    {
+
+        Dictionary<string, string> LastPage = new Dictionary<string, string>();
+        LastPage.Add(cfiRange, page.ToString());
+        OnNavigatingPageAction.Invoke(LastPage);
+    }
+    #endregion
+
+    #region OnChangeBackground
+    [Parameter]
+    public EventCallback<string> OnChangeBackground { get; set; }
+
+    private static Action<string> OnChangeBackgroundAction;
+
+
+    private void OnChangeBackgroundActionHandler(string background)
+    {
+        OnChangeBackground.InvokeAsync(background);
+
+    }
+
+    [JSInvokable]
+    public static void OnChangeBackgroundFromJs(string background)
+    {
+        OnChangeBackgroundAction.Invoke(background);
+    }
+    #endregion
+
+    #region OnChangeFontSize
+    [Parameter]
+    public EventCallback<int> OnChangeFontSize { get; set; }
+
+    private void OnChangeFontSizeHandler(int Size)
+    {
+        OnClickCollapse(0, true);
+        OnChangeFontSize.InvokeAsync(Size);
+
+    }
+    #endregion
+
+    #region OnChangeFontFace
+    [Parameter]
+    public EventCallback<string> OnChangeFontFace { get; set; }
+
+    private void OnChangeFontFaceHandler(string Face)
+    {
+        OnClickCollapse(0, true);
+        OnChangeFontFace.InvokeAsync(Face);
+
+    }
+    #endregion
+    private void OnClickCollapse(int sidebarSelectedOption, bool close)
+    {
+        if (close)
+        {
+            sidebarClass = "esidebarhide ehidesidebar";
+            sidebarshow = close;
+            highlightingObject = new Highlight();
+        }
+        else
+        {
+            sidebarClass = "esidebarshow eshowsidebar";
+            sidebarshow = close;
+            SidebarSelectedOption = sidebarSelectedOption;
+
+        }
+        StateHasChanged();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            OnSelectTextAction = OnSelectTextActionHandler;
+            OnNavigatingPageAction = OnNavigatingPageActionHandler;
+            OnChangeBackgroundAction = OnChangeBackgroundActionHandler;
+            OnHighlightTextAction = OnHighlightTextActionHandler;
+            OnCloseSideBarAction = OnCloseSideBarActionHandler;
+            await Task.Delay(1000).ContinueWith(async p =>
+            {
+                JsZipMin = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                                "import", "./_content/BlazorEpub/jszip.min.js");
+            }).ContinueWith(async p =>
+            {
+                EpubJs = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                                "import", "./_content/BlazorEpub/epub.js");
+
+            }).ContinueWith(async p =>
+            {
+                Main = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                               "import", "./_content/BlazorEpub/main.js");
+
+                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, Background, Highlights,FontSize,FontFace).AsTask();
+
+            });
+
+        }
+    }
+
+}
