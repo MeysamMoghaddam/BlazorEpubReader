@@ -19,10 +19,10 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     }
   
     //register FontFace
-    rendition.themes.register("Style", "/_content/BlazorEpub/BlazorEpub.bundle.scp.css");
+    rendition.themes.register("Style", "/_content/BlazorEpubReader/BlazorEpubReader.bundle.scp.css");
     rendition.themes.select("Style");
     rendition.on("click", function (e) {
-        DotNet.invokeMethodAsync('BlazorEpub', 'OnCloseSideBarFromJs');
+        DotNet.invokeMethodAsync('BlazorEpubReader', 'OnCloseSideBarFromJs');
     });
 
    
@@ -220,7 +220,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
             });
         });
 
-        DotNet.invokeMethodAsync('BlazorEpub', 'OnNavigatingPageFromJs', cfiRange, locations.start.displayed.page);
+        DotNet.invokeMethodAsync('BlazorEpubReader', 'OnNavigatingPageFromJs', cfiRange, locations.start.displayed.page);
 
         //currnt page / total pages   
         document.getElementById("current-page").innerText = currentPageNumber;
@@ -263,11 +263,11 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
         selectedtext = selectText;
         selectedCfiRange = cfiRange;
         //سایدبار رو باز میکنه
-        DotNet.invokeMethodAsync('BlazorEpub', 'OnSelectTextFromJs');
+        DotNet.invokeMethodAsync('BlazorEpubReader', 'OnSelectTextFromJs');
         var pageHref = rendition.location.start.href;
         isAnnotation = false;
         //ارسال مقادیر پیشفرض
-        DotNet.invokeMethodAsync('BlazorEpub', 'OnHighlightTextFromJs', selectedCfiRange, "transparent", selectedtext, pageHref, currentPageNumber, isAnnotation);
+        DotNet.invokeMethodAsync('BlazorEpubReader', 'OnHighlightTextFromJs', selectedCfiRange, "transparent", selectedtext, pageHref, currentPageNumber, isAnnotation);
 
     });
     //#endregion
@@ -285,7 +285,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
                         }
 
                     }));
-                    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "dark");
+                    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "dark");
                     break;
                 case "secondary":
                     rendition.getContents().forEach(c => c.addStylesheetRules({
@@ -295,7 +295,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
                         }
 
                     }));
-                    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "secondary");
+                    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "secondary");
                     break;
                 case "light":
                     rendition.getContents().forEach(c => c.addStylesheetRules({
@@ -305,7 +305,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
                         }
 
                     }));
-                    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "light");
+                    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "light");
                     break;
                 case "white":
                     rendition.getContents().forEach(c => c.addStylesheetRules({
@@ -315,7 +315,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
                         }
 
                     }));
-                    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "white");
+                    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "white");
                     break;
                 default:
             }
@@ -332,7 +332,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     //        }
 
     //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "dark");
+    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "dark");
     //});
     //$('#background-secondary').on('click', function () {
     //    background = "secondary";
@@ -344,7 +344,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     //        }
 
     //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "secondary");
+    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "secondary");
 
     //});
     //$('#background-light').on('click', function () {
@@ -357,7 +357,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     //        }
 
     //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "light");
+    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "light");
 
     //});
     //$('#background-white').on('click', function () {
@@ -370,7 +370,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     //        }
 
     //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpub', 'OnChangeBackgroundFromJs', "white");
+    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "white");
 
     //});
     //#endregion
@@ -396,7 +396,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
             }
             var pageHref = rendition.location.start.href;
 
-            DotNet.invokeMethodAsync('BlazorEpub', 'OnHighlightTextFromJs', selectedCfiRange, color, selectedtext, pageHref, currentPageNumber, isAnnotation);
+            DotNet.invokeMethodAsync('BlazorEpubReader', 'OnHighlightTextFromJs', selectedCfiRange, color, selectedtext, pageHref, currentPageNumber, isAnnotation);
 
         }
     });
@@ -419,7 +419,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     //    }
     //    var pageHref = rendition.location.start.href;
 
-    //    DotNet.invokeMethodAsync('BlazorEpub', 'OnHighlightTextFromJs', selectedCfiRange, color, selectedtext, pageHref, currentPageNumber, isAnnotation);
+    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnHighlightTextFromJs', selectedCfiRange, color, selectedtext, pageHref, currentPageNumber, isAnnotation);
 
 
 

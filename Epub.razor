@@ -436,16 +436,16 @@
             await Task.Delay(1000).ContinueWith(async p =>
             {
                 JsZipMin = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                                "import", "./_content/BlazorEpub/jszip.min.js");
+                                "import", "./_content/BlazorEpubReader/jszip.min.js");
             }).ContinueWith(async p =>
             {
                 EpubJs = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                                "import", "./_content/BlazorEpub/epub.js");
+                                "import", "./_content/BlazorEpubReader/epub.js");
 
             }).ContinueWith(async p =>
             {
                 Main = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                               "import", "./_content/BlazorEpub/main.js");
+                               "import", "./_content/BlazorEpubReader/main.js");
 
                 await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, Background, Highlights,FontSize,FontFace).AsTask();
 

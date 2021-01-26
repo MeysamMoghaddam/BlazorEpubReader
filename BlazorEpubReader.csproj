@@ -4,15 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Meysam Masoud</Authors>
-    <Description>BlazorEpub is a Razor Class Library using the Epub.js library for handle and render epub documents in Razor pages.
-Tested on Blazor Wasm projects without need to any css resourse and style.</Description>
+    <Description>BlazorEpubReader is a Razor Class Library using the Epub.js library for handle and render epub documents in Razor pages.
+Tested on Blazor Wasm projects without need to any css resourse and style</Description>
     <Copyright>© Moghaddam. All rights reserved.</Copyright>
-    <RepositoryUrl>https://github.com/MeysamMoghaddam/BlazorEpub</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/MeysamMoghaddam/BlazorEpub</PackageProjectUrl>
-    <PackageReleaseNotes>First Step: Highlight,FontFace,FontSize,Background,LastPage,Notes,Next Page,Previeus Page,Current PageNumber,Total PageNumber,...</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/MeysamMoghaddam/BlazorEpubReader</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/MeysamMoghaddam/BlazorEpubReader</PackageProjectUrl>
+    <PackageReleaseNotes>Rename Project Name</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageTags>BlazorWebAssembly Blazor BlazorVideoPlayer epub.js EpubReader Epub net5.0</PackageTags>
     <PackageId>BlazorEpubReader</PackageId>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
