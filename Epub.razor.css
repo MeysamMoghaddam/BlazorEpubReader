@@ -1,5 +1,5 @@
-﻿*{
-    direction:rtl!important;
+﻿* {
+    direction: rtl !important;
 }
 
 
@@ -747,6 +747,7 @@ input[type="reset"].btn-block,
 input[type="button"].btn-block {
     width: 100%;
 }
+
 .btn .badge {
     position: relative;
     top: -1px;
@@ -829,32 +830,33 @@ input[type="button"].btn-block {
 }
 
 .row {
-    display: -ms-flexbox!important;
-    display: flex!important;
-    -ms-flex-wrap: wrap!important;
-    flex-wrap: wrap!important;
-    margin-right: -15px!important;
-    margin-left: -15px!important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-wrap: wrap !important;
+    flex-wrap: wrap !important;
+    margin-right: -15px !important;
+    margin-left: -15px !important;
 }
 
 .no-gutters {
-    margin-right: 0!important;
-    margin-left: 0!important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
 }
+
 .fixed-top {
-    position: fixed!important;
-    top: 0!important;
-    right: 0!important;
-    left: 0!important;
-    z-index: 1030!important;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: 0 !important;
+    z-index: 1030 !important;
 }
 
 .fixed-bottom {
-    position: fixed!important;
-    right: 0!important;
-    bottom: 0!important;
-    left: 0!important;
-    z-index: 1030!important;
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    z-index: 1030 !important;
 }
 
 .bg-primary {
@@ -1286,9 +1288,9 @@ button.bg-dark:focus {
 }
 
 .text-truncate {
-    overflow: hidden!important;
-    text-overflow: ellipsis!important;
-    white-space: nowrap!important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
 }
 
 .text-left {
@@ -1302,6 +1304,7 @@ button.bg-dark:focus {
 .text-center {
     text-align: center !important;
 }
+
 .rounded-circle {
     border-radius: 50% !important;
 }
@@ -1415,11 +1418,11 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .text-hide {
-    font: 0/0 a!important;
-    color: transparent!important;
-    text-shadow: none!important;
-    background-color: transparent!important;
-    border: 0!important;
+    font: 0/0 a !important;
+    color: transparent !important;
+    text-shadow: none !important;
+    background-color: transparent !important;
+    border: 0 !important;
 }
 
 .text-decoration-none {
@@ -1643,20 +1646,23 @@ a.text-dark:hover, a.text-dark:focus {
 
 
 
-.ebottom-menu{
-    height:40px!important;
+.ebottom-menu {
+    height: 40px !important;
 }
+
 .ecollapse-menu {
-    width: 45px!important;
-    height: 45px!important;
-    z-index:99!important;
+    width: 45px !important;
+    height: 45px !important;
+    z-index: 99 !important;
 }
+
 .ecollapse-close {
     right: 228px !important;
-    border-bottom-left-radius: 50px!important;
-    border-top-left-radius: 50px!important;
-    height: 60px!important;
+    border-bottom-left-radius: 50px !important;
+    border-top-left-radius: 50px !important;
+    height: 60px !important;
 }
+
 .esidebar {
     width: 230px !important;
     height: 100vh !important;
@@ -1665,16 +1671,33 @@ a.text-dark:hover, a.text-dark:focus {
     text-align: right !important;
     direction: rtl !important;
 }
+
 .esidebarhide {
     right: -260px;
 }
+
 .esidebarshow {
     right: 0;
 }
-.eshowsidebar {
+
+::deep .eshowsidebar {
     animation-name: showside;
     animation-duration: 1s;
 }
+
+::deep @keyframes showside {
+    from
+
+{
+    right: -260px;
+}
+
+to {
+    right: 0;
+}
+
+}
+
 @keyframes showside {
     from {
         right: -260px;
@@ -1684,10 +1707,25 @@ a.text-dark:hover, a.text-dark:focus {
         right: 0;
     }
 }
-.ehidesidebar {
+
+::deep .ehidesidebar {
     animation-name: hideside;
     animation-duration: 1s;
 }
+
+::deep @keyframes hideside {
+    from
+
+{
+    right: 0;
+}
+
+to {
+    right: -260px;
+}
+
+}
+
 @keyframes hideside {
     from {
         right: 0;
@@ -1703,57 +1741,57 @@ a.text-dark:hover, a.text-dark:focus {
 
 
 .center-div {
-    width: 300px!important;
-    height: 300px!important;
-    position: absolute!important;
-    left: 50%!important;
-    top: 60%!important;
-    margin-left: -150px!important;
-    margin-top: -150px!important;
+    width: 300px !important;
+    height: 300px !important;
+    position: absolute !important;
+    left: 50% !important;
+    top: 60% !important;
+    margin-left: -150px !important;
+    margin-top: -150px !important;
 }
 
 .spinner {
-    position: fixed!important;
-    z-index: 99999!important;
-    height: 100%!important;
-    width: 100%!important;
-    top: 0!important;
-    left: 0!important;
-    background-color: Black!important;
-    filter: alpha(opacity=60)!important;
-    opacity: 0.4!important;
-    -moz-opacity: 0.4!important;
+    position: fixed !important;
+    z-index: 99999 !important;
+    height: 100% !important;
+    width: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    background-color: Black !important;
+    filter: alpha(opacity=60) !important;
+    opacity: 0.4 !important;
+    -moz-opacity: 0.4 !important;
 }
 
 .loader {
-    margin: auto!important;
-    border: 16px solid #f3f3f3!important;
-    border-radius: 50%!important;
-    border-top: 16px solid #15a0ec!important;
-    border-bottom: 16px solid #15a0ec!important;
-    width: 120px!important;
-    height: 120px!important;
-    -webkit-animation: spin 2s linear infinite!important;
-    animation: spin 2s linear infinite!important;
+    margin: auto !important;
+    border: 16px solid #f3f3f3 !important;
+    border-radius: 50% !important;
+    border-top: 16px solid #15a0ec !important;
+    border-bottom: 16px solid #15a0ec !important;
+    width: 120px !important;
+    height: 120px !important;
+    -webkit-animation: spin 2s linear infinite !important;
+    animation: spin 2s linear infinite !important;
 }
 
 .inner-div {
-    background-color: rgba(255, 255, 255, 0.00)!important;
-    border-radius: 15px!important;
-    margin: auto!important;
-    padding: 2%!important;
-    width: 90px!important;
+    background-color: rgba(255, 255, 255, 0.00) !important;
+    border-radius: 15px !important;
+    margin: auto !important;
+    padding: 2% !important;
+    width: 90px !important;
 }
 
 
 .spinnerr > div {
-    width: 18px!important;
-    height: 18px!important;
-    background-color: #fff!important;
-    border-radius: 100%!important;
-    display: inline-block!important;
-    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both!important;
-    animation: sk-bouncedelay 1.4s infinite ease-in-out both!important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: #fff !important;
+    border-radius: 100% !important;
+    display: inline-block !important;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both !important;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both !important;
 }
 
 .spinnerr .bounce1 {
@@ -1787,17 +1825,19 @@ a.text-dark:hover, a.text-dark:focus {
         transform: scale(1.0);
     }
 }
+
 #toc {
     overflow-y: scroll !important;
-    height: 50vh!important;
-    line-height: 2.5!important;
+    height: 50vh !important;
+    line-height: 2.5 !important;
 }
+
 .highlight-select-option:focus {
     /* border-color: #686868 !important;*/
     border: 1px solid #686868 !important;
 }
-.FontSizeOption{
-    padding-left:2.5rem!important;
-    padding-right:2.5rem!important;
-}
 
+.FontSizeOption {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+}
