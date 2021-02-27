@@ -2,7 +2,7 @@
 @namespace BlazorEpub
 
 <div class="bg-info d-flex align-items-center esidebar @sidebarClass">
-    <div class="align-middle position-absolute ecollapse-close bg-info text-white pt-3" @onclick="p => OnClickCollapse(0, true)">
+    <div style="cursor:pointer" class="align-middle position-absolute ecollapse-close bg-info text-white pt-3" @onclick="p => OnClickCollapse(0, true)">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
         </svg>
@@ -12,9 +12,9 @@
             یادداشت‌ها و هایلایت‌ها
         </h5>
         <div class="px-3">
-            <a class="btn btn-lg btn-primary text-white add-Annotation" @onclick="@(p => { OnClickCollapse(2, false);highlightingObject = new Highlight { CfiRange=currentCfiRange,HighlightColor="transparent",HighlightText="حاشیه‌نویسی",PageNumber=currentPageNum,IsAnnotation=true}; })">
+            <div style="cursor:pointer" class="btn btn-lg btn-primary text-white add-Annotation" @onclick="@(p => { OnClickCollapse(2, false);highlightingObject = new Highlight { CfiRange=currentCfiRange,HighlightColor="transparent",HighlightText="حاشیه‌نویسی",PageNumber=currentPageNum,IsAnnotation=true}; })">
                 حاشیه‌نویسی جدید
-            </a>
+            </div>
         </div>
 
         <div class="p-2" style="overflow-y: scroll !important; height: 500px;">
@@ -23,7 +23,7 @@
             {
                 foreach (var item in Highlights.Where(p => p.CfiRange.Split('!')[0] == currentCfiRange.Split('!')[0] && p.PageNumber == currentPageNum).ToList())
                 {
-                    <div data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
+                    <div style="cursor:pointer" data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
                         <div class="toast-header">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
@@ -57,9 +57,9 @@
         </div>
         <div class="p-3 text-center">
             <textarea rows="4" @bind="highlightingObject.Note"></textarea>
-            <a class="btn btn-lg btn-primary text-white" @onclick="OnSendHighlightText">
+            <div style="cursor:pointer" class="btn btn-lg btn-primary text-white" @onclick="OnSendHighlightText">
                 ثبت
-            </a>
+            </div>
         </div>
     </div>
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 1?"d-block":"d-none")" style="top:0 !important;">
@@ -67,40 +67,40 @@
             رنگ پس زمینه
         </h5>
         <div class="d-inline-flex">
-            <div data-ebgcolor="dark" class="ebackgroundcolor ecollapse-menu bg-dark rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
-            <div data-ebgcolor="secondary" class="ebackgroundcolor ecollapse-menu bg-secondary rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
-            <div data-ebgcolor="light" class="ebackgroundcolor ecollapse-menu bg-light rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
-            <div data-ebgcolor="white" class="ebackgroundcolor ecollapse-menu bg-white rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div style="cursor:pointer" data-ebgcolor="dark" class="ebackgroundcolor ecollapse-menu bg-dark rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div style="cursor:pointer" data-ebgcolor="secondary" class="ebackgroundcolor ecollapse-menu bg-secondary rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div style="cursor:pointer" data-ebgcolor="light" class="ebackgroundcolor ecollapse-menu bg-light rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
+            <div style="cursor:pointer" data-ebgcolor="white" class="ebackgroundcolor ecollapse-menu bg-white rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
         </div>
         <h5 class="p-3 border-bottom text-white">
             اندازه قلم
         </h5>
         <div class="d-block">
             <div class="d-flex justify-content-center">
-                <div data-size="12" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(12)">12</div>
-                <div data-size="14" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(14)">14</div>
+                <div data-size="12" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(12)">12</div>
+                <div data-size="14" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(14)">14</div>
             </div>
             <div class="d-flex justify-content-center">
-                <div data-size="16" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(16)">16</div>
-                <div data-size="18" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(18)">18</div>
+                <div data-size="16" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(16)">16</div>
+                <div data-size="18" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(18)">18</div>
             </div>
             <div class="d-flex justify-content-center">
-                <div data-size="20" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(20)">20</div>
-                <div data-size="24" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(24)">24</div>
+                <div data-size="20" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(20)">20</div>
+                <div data-size="24" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(24)">24</div>
             </div>
             <div class="d-flex justify-content-center">
-                <div data-size="28" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(28)">28</div>
-                <div data-size="34" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(34)">34</div>
+                <div data-size="28" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(28)">28</div>
+                <div data-size="34" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(34)">34</div>
             </div>           
         </div>
         <h5 class="p-3 border-bottom text-white">
             نوع قلم
         </h5>
         <div class="d-block">
-            <div data-fontface="IRANSans" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("IRANSans"))">IRANSans</div>
-            <div data-fontface="Shabnam-FD" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Shabnam-FD"))">Shabnam-FD</div>
-            <div data-fontface="B NazaninB" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("B NazaninB"))">B Nazanin</div>
-            <div data-fontface="Tahoma" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Tahoma"))">Tahoma</div>
+            <div style="cursor:pointer" data-fontface="IRANSans" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("IRANSans"))">IRANSans</div>
+            <div style="cursor:pointer" data-fontface="Shabnam-FD" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Shabnam-FD"))">Shabnam-FD</div>
+            <div style="cursor:pointer" data-fontface="B NazaninB" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("B NazaninB"))">B Nazanin</div>
+            <div style="cursor:pointer" data-fontface="Tahoma" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("Tahoma"))">Tahoma</div>
         </div>
     </div>
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 0?"d-block":"d-none")" style="top:0 !important;">
@@ -152,7 +152,7 @@
     </div>
 
 </div>
-<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle mx-2" style="left: 1px !important; right: unset !important; " @onclick="p=>OnClickCollapse(0,false)">
+<div  class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle mx-2" style="cursor: pointer;left: 1px !important; right: unset !important; " @onclick="p=>OnClickCollapse(0,false)">
     <div class="p-2 text-white font-weight-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
@@ -160,7 +160,7 @@
     </div>
 
 </div>
-<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="right: unset !important; left: 60px !important;" @onclick="p=>OnClickCollapse(1,false)">
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="cursor: pointer;right: unset !important; left: 60px !important;" @onclick="p=>OnClickCollapse(1,false)">
     <div class="p-2 text-white font-weight-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
@@ -169,7 +169,7 @@
     </div>
 
 </div>
-<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="right: unset !important; left: 110px !important;" @onclick="p=>OnClickCollapse(3,false)">
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle" style="cursor: pointer;right: unset !important; left: 110px !important;" @onclick="p=>OnClickCollapse(3,false)">
     <div class="p-2 text-white font-weight-bold">
         <svg xmlns="http://www.w3.org/2000/svg" version="1.0" width="30" height="30" viewBox="0 0 840.000000 859.000000" style="padding-left: 6px;padding-bottom: 4px;" preserveAspectRatio="xMidYMid meet">
 
