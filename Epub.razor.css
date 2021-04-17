@@ -1827,6 +1827,8 @@ to {
 }
 
 #toc {
+    overflow-x: scroll !important;
+    width: 230px !important;
     overflow-y: scroll !important;
     height: 50vh !important;
     line-height: 2.5 !important;

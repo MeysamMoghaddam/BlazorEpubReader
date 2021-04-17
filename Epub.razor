@@ -9,11 +9,11 @@
     </div>
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 3 ? "d-block" : "d-none")" style="top:0 !important;">
         <h5 class="p-3 border-bottom">
-            یادداشت‌ها و هایلایت‌ها
+            @HighlightAndNoteText
         </h5>
         <div class="px-3">
             <div style="cursor:pointer" class="btn btn-lg btn-primary text-white add-Annotation" @onclick="@(p => { OnClickCollapse(2, false);highlightingObject = new Highlight { CfiRange=currentCfiRange,HighlightColor="transparent",HighlightText="حاشیه‌نویسی",PageNumber=currentPageNum,IsAnnotation=true}; })">
-                حاشیه‌نویسی جدید
+                @NewAnnotationText
             </div>
         </div>
 
@@ -47,7 +47,7 @@
 
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 2?"d-block":"d-none")" style="top:0 !important;">
         <h5 class="p-3 border-bottom">
-            رنگ هایلایت
+            @HighlightColorText
         </h5>
         <div class="d-inline-flex">
             <div data-color="blue" class="highlight-select-option ecollapse-menu bg-primary rounded-circle m-1"></div>
@@ -58,13 +58,13 @@
         <div class="p-3 text-center">
             <textarea rows="4" @bind="highlightingObject.Note"></textarea>
             <div style="cursor:pointer" class="btn btn-lg btn-primary text-white" @onclick="OnSendHighlightText">
-                ثبت
+                @SaveText
             </div>
         </div>
     </div>
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 1?"d-block":"d-none")" style="top:0 !important;">
         <h5 class="p-3 border-bottom text-white">
-            رنگ پس زمینه
+            @BackgroundColorText            
         </h5>
         <div class="d-inline-flex">
             <div style="cursor:pointer" data-ebgcolor="dark" class="ebackgroundcolor ecollapse-menu bg-dark rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
@@ -73,7 +73,7 @@
             <div style="cursor:pointer" data-ebgcolor="white" class="ebackgroundcolor ecollapse-menu bg-white rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
         </div>
         <h5 class="p-3 border-bottom text-white">
-            اندازه قلم
+            @FontSizeText            
         </h5>
         <div class="d-block">
             <div class="d-flex justify-content-center">
@@ -94,7 +94,7 @@
             </div>           
         </div>
         <h5 class="p-3 border-bottom text-white">
-            نوع قلم
+            @FontFaceText            
         </h5>
         <div class="d-block">
             <div style="cursor:pointer" data-fontface="IRANSans" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("IRANSans"))">IRANSans</div>
@@ -134,7 +134,7 @@
         </div>
     </div>
 </div>
-<div class="ebottom-menu fixed-bottom bg-white">
+<div class="ebottom-menu fixed-bottom bg-white border-top">
 
     <div class="float-right p-2" id="next">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
@@ -190,57 +190,90 @@
 </div>
 @code {
     /// <summary>
-    /// آدرس فایل
+    /// Highlight And Note Text
+    /// </summary>
+    [Parameter] public string HighlightAndNoteText { get; set; } = "Notes And Highlights";
+
+    /// <summary>
+    /// New Annotation Text
+    /// </summary>
+    [Parameter] public string NewAnnotationText { get; set; } = "New Annotation";
+
+    /// <summary>
+    /// Highlight Color Text
+    /// </summary>
+    [Parameter] public string HighlightColorText { get; set; } = "Highlight Color";
+
+    /// <summary>
+    /// Save Text
+    /// </summary>
+    [Parameter] public string SaveText { get; set; } = "Save";
+
+    /// <summary>
+    /// Background Color Text
+    /// </summary>
+    [Parameter] public string BackgroundColorText { get; set; } = "Background Color";
+
+    /// <summary>
+    /// Font Size Text
+    /// </summary>
+    [Parameter] public string FontSizeText { get; set; } = "Font Size";
+
+    /// <summary>
+    /// Font Face Text
+    /// </summary>
+    [Parameter] public string FontFaceText { get; set; } = "Font Face";
+
+    /// <summary>
+    /// Epub File Address
     /// </summary>
     [Parameter]
     public string EpubFile { get; set; }
 
     /// <summary>
-    /// آدرس آخرین صفحه بر اساس
-    /// cfi
+    /// Last Page With cfi
     /// </summary>
     [Parameter]
     public string LastPageCfi { get; set; }
 
     /// <summary>
-    /// رنگ پس زمینه
+    /// Background Color
     /// </summary>
     [Parameter]
-    public string Background { get; set; }
+    public string BackgroundColor { get; set; }
 
     /// <summary>
-    /// اندازه فونت
+    /// Text Font Size
     /// </summary>
     [Parameter]
     public string FontSize { get; set; }
 
     /// <summary>
-    /// صورت فونت
+    /// Font Face
     /// </summary>
     [Parameter]
     public string FontFace { get; set; }
 
 
     /// <summary>
-    /// لیست کل هایلایت ها بر اساس کلاس
-    /// Highlight
+    /// All Highlight List With Highlight Class
     /// </summary>
     [Parameter]
     public List<Highlight> Highlights { get; set; } = new List<Highlight>();
 
-    //کلاس سایدبار
+    //SideBar Class
     private string sidebarClass = "esidebarhide ehidesidebar";
 
-    //نمایش یا عدم نمایش سایدبار
+    //Show SideBar
     private bool sidebarshow = false;
 
-    //نوع محتوا سایدبار
+    //Content SideBar
     private int SidebarSelectedOption = 0;
 
-    //رنج آدرس صفحه جاری
+    //Current CfiRange
     private string currentCfiRange = "";
 
-    //شماره صفحه جاری
+    //Current PageNumber
     private int currentPageNum = 0;
 
     private Highlight highlightingObject = new Highlight();
@@ -447,7 +480,7 @@
                 Main = await JSRuntime.InvokeAsync<IJSObjectReference>(
                                "import", "./_content/BlazorEpubReader/main.js");
 
-                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, Background, Highlights,FontSize,FontFace).AsTask();
+                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, BackgroundColor, Highlights,FontSize,FontFace).AsTask();
 
             });
 
