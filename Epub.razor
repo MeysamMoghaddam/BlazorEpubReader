@@ -432,6 +432,7 @@
     [Parameter]
     public EventCallback<string> OnChangeFontFace { get; set; }
 
+
     private void OnChangeFontFaceHandler(string Face)
     {
         OnClickCollapse(0, true);
@@ -439,6 +440,20 @@
 
     }
     #endregion
+
+    #region OnEnded
+    [Parameter]
+    public EventCallback OnEnded { get; set; }
+
+
+    [JSInvokable]
+    public async Task onEnded()
+    {
+        Console.WriteLine("onEnded");
+        await OnEnded.InvokeAsync();
+    }
+    #endregion
+
     private void OnClickCollapse(int sidebarSelectedOption, bool close)
     {
         if (close)
@@ -457,10 +472,15 @@
         StateHasChanged();
     }
 
+    private DotNetObjectReference<Epub> objectRef;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            objectRef = DotNetObjectReference.Create(this);
+
+
             OnSelectTextAction = OnSelectTextActionHandler;
             OnNavigatingPageAction = OnNavigatingPageActionHandler;
             OnChangeBackgroundAction = OnChangeBackgroundActionHandler;
@@ -480,11 +500,12 @@
                 Main = await JSRuntime.InvokeAsync<IJSObjectReference>(
                                "import", "./_content/BlazorEpubReader/main.js");
 
-                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, BackgroundColor, Highlights,FontSize,FontFace).AsTask();
+                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, BackgroundColor, Highlights,FontSize,FontFace, objectRef).AsTask();
 
             });
 
         }
     }
+
 
 }

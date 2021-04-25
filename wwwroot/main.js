@@ -1,4 +1,4 @@
-export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize, fontface) {
+export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize, fontface,component) {
 
     let selectedCfiRange = "";
     let selectedtext = "";
@@ -231,7 +231,7 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
 
         //End of Book
         if (locations.atEnd == true) {
-            alert("EndBook");
+            component.invokeMethodAsync('onEnded');
         }
        
         var highlightBlocks = document.querySelectorAll(".highlightBlock");

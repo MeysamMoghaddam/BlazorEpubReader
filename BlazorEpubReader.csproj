@@ -9,13 +9,13 @@ Tested on Blazor Wasm projects without need to any css resourse and style</Descr
     <Copyright>© Moghaddam. All rights reserved.</Copyright>
     <RepositoryUrl>https://github.com/MeysamMoghaddam/BlazorEpubReader</RepositoryUrl>
     <PackageProjectUrl>https://github.com/MeysamMoghaddam/BlazorEpubReader</PackageProjectUrl>
-    <PackageReleaseNotes>Edit Language</PackageReleaseNotes>
+    <PackageReleaseNotes>Add OnEnded Document</PackageReleaseNotes>
     <PackageIcon>logo.png</PackageIcon>
     <PackageTags>BlazorWebAssembly Blazor BlazorVideoPlayer epub.js EpubReader Epub net5.0</PackageTags>
     <PackageId>BlazorEpubReader</PackageId>
-    <AssemblyVersion>1.0.5.0</AssemblyVersion>
-    <FileVersion>1.0.5.0</FileVersion>
-    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
+    <FileVersion>1.0.6.0</FileVersion>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
