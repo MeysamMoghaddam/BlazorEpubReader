@@ -15,32 +15,94 @@
             <div style="cursor:pointer" class="btn btn-lg btn-primary text-white add-Annotation" @onclick="@(p => { OnClickCollapse(2, false);highlightingObject = new Highlight { CfiRange=currentCfiRange,HighlightColor="transparent",HighlightText="حاشیه‌نویسی",PageNumber=currentPageNum,IsAnnotation=true}; })">
                 @NewAnnotationText
             </div>
+            <div class="row justify-content-center pt-1">
+                <div class="col-5 btn btn-primary mx-1 @(allHighlight?"active":"")" @onclick="p=> { allHighlight = true;StateHasChanged(); }">
+                    @AllHighlightListText
+                </div>
+                <div class="col-5 btn btn-primary mx-1 @(!allHighlight?"active":"")" @onclick="p=> { allHighlight = false;StateHasChanged(); }">
+                    @CurrentPageHighlightListText
+                </div>
+            </div>
         </div>
+        @if (allHighlight)
+        {
+            <div class="p-2" style="overflow-y: scroll !important; height: 500px;">
 
-        <div class="p-2" style="overflow-y: scroll !important; height: 500px;">
-
-            @if (Highlights.Any())
-            {
-                foreach (var item in Highlights.Where(p => p.CfiRange.Split('!')[0] == currentCfiRange.Split('!')[0] && p.PageNumber == currentPageNum).ToList())
+                @if (Highlights.Any())
                 {
-                    <div style="cursor:pointer" data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
-                        <div class="toast-header">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                            </svg>
-                            @*<img src="..." class="rounded mr-2" alt="...">*@
-                            <strong class="mr-1 @(item.HighlightColor == "transparent"?"text-dark":"text-white") px-2" style="background-color:@item.HighlightColor">@item.HighlightText</strong>
-                            @*<small>11 mins ago</small>*@
+                    foreach (var item in Highlights)
+                    {
+                        <div style="cursor:pointer" data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <div class="row w-100">
+                                    <div class="col-2 p-0 pr-2 text-danger" @onclick="async ()=> {await OnDeleteHighlight.InvokeAsync(item.Id);OnClickCollapse(0, true); }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                        </svg>
 
+                                    </div>
+                                    <div @onclick="p=>OnHighlightBlock(item.CfiRange)" data-cfirange="@item.CfiRange" class="col-9 px-1 notetext">
+                                        <strong class="mr-1 @(item.HighlightColor == "transparent"?"text-dark":"text-white") px-2" style="background-color:@item.HighlightColor">@item.HighlightText</strong>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                            <div class="toast-body" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                                @item.Note
+                            </div>
                         </div>
-                        <div class="toast-body">
-                            @item.Note
-                        </div>
-                    </div>
+                    }
                 }
-            }
 
-        </div>
+            </div>
+        }
+        else
+        {
+            <div class="p-2" style="overflow-y: scroll !important; height: 500px;">
+
+                @if (Highlights.Any())
+                {
+                    foreach (var item in Highlights.Where(p => p.CfiRange.Split('!')[0] == currentCfiRange.Split('!')[0] && p.PageNumber == currentPageNum).ToList())
+                    {
+                        <div style="cursor:pointer" data-cfirange="@item.CfiRange" data-highlighttype="@(item.IsAnnotation?"IsAnnotation":"IsNote")" class="toast show highlightBlock" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <div class="row w-100">
+                                    <div class="col-2 p-0 pr-2 text-danger" @onclick="async ()=> {await OnDeleteHighlight.InvokeAsync(item.Id);OnClickCollapse(0, true); }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                        </svg>
+
+                                    </div>
+                                    <div data-cfirange="@item.CfiRange" class="col-9 px-1 notetext">
+                                        <strong class="mr-1 @(item.HighlightColor == "transparent"?"text-dark":"text-white") px-2" style="background-color:@item.HighlightColor">@item.HighlightText</strong>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                            <div class="toast-body" @onclick="p=> { highlightingObject = item;OnClickCollapse(2, false); }">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                                @item.Note
+                            </div>
+                        </div>
+                    }
+                }
+
+            </div>
+        }
+
 
 
     </div>
@@ -64,7 +126,7 @@
     </div>
     <div class="pt-5 position-absolute @(SidebarSelectedOption == 1?"d-block":"d-none")" style="top:0 !important;">
         <h5 class="p-3 border-bottom text-white">
-            @BackgroundColorText            
+            @BackgroundColorText
         </h5>
         <div class="d-inline-flex">
             <div style="cursor:pointer" data-ebgcolor="dark" class="ebackgroundcolor ecollapse-menu bg-dark rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
@@ -73,7 +135,7 @@
             <div style="cursor:pointer" data-ebgcolor="white" class="ebackgroundcolor ecollapse-menu bg-white rounded-circle m-1" @onclick="p=>OnClickCollapse(0,true)"></div>
         </div>
         <h5 class="p-3 border-bottom text-white">
-            @FontSizeText            
+            @FontSizeText
         </h5>
         <div class="d-block">
             <div class="d-flex justify-content-center">
@@ -91,10 +153,10 @@
             <div class="d-flex justify-content-center">
                 <div data-size="28" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(28)">28</div>
                 <div data-size="34" style="cursor:pointer" class="FontSizeOption bg-dark py-2 my-1 mr-1 text-center text-white" @onclick="p=>OnChangeFontSizeHandler(34)">34</div>
-            </div>           
+            </div>
         </div>
         <h5 class="p-3 border-bottom text-white">
-            @FontFaceText            
+            @FontFaceText
         </h5>
         <div class="d-block">
             <div style="cursor:pointer" data-fontface="IRANSans" class="FontFaceOption bg-dark px-5 py-2 my-1 mr-1 text-center text-white" @onclick="@(p=>OnChangeFontFaceHandler("IRANSans"))">IRANSans</div>
@@ -152,7 +214,7 @@
     </div>
 
 </div>
-<div  class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle mx-2" style="cursor: pointer;left: 1px !important; right: unset !important; " @onclick="p=>OnClickCollapse(0,false)">
+<div class="ecollapse-menu fixed-bottom bg-info mb-5 rounded-circle mx-2" style="cursor: pointer;left: 1px !important; right: unset !important; " @onclick="p=>OnClickCollapse(0,false)">
     <div class="p-2 text-white font-weight-bold">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
@@ -189,6 +251,18 @@
 
 </div>
 @code {
+
+    /// <summary>
+    /// All Highlight List Text
+    /// </summary>
+    [Parameter] public string AllHighlightListText { get; set; } = "All";
+
+    /// <summary>
+    /// Current Page Highlight List Text
+    /// </summary>
+    [Parameter] public string CurrentPageHighlightListText { get; set; } = "This";
+
+
     /// <summary>
     /// Highlight And Note Text
     /// </summary>
@@ -230,6 +304,7 @@
     [Parameter]
     public string EpubFile { get; set; }
 
+
     /// <summary>
     /// Last Page With cfi
     /// </summary>
@@ -267,6 +342,8 @@
     //Show SideBar
     private bool sidebarshow = false;
 
+    private bool allHighlight;
+
     //Content SideBar
     private int SidebarSelectedOption = 0;
 
@@ -281,6 +358,10 @@
     IJSObjectReference EpubJs;
     IJSObjectReference Main;
 
+    #region Delete Note
+    [Parameter]
+    public EventCallback<int> OnDeleteHighlight { get; set; }
+    #endregion
     #region OnCloseSideBar
 
     private static Action OnCloseSideBarAction;
@@ -449,10 +530,14 @@
     [JSInvokable]
     public async Task onEnded()
     {
-        Console.WriteLine("onEnded");
         await OnEnded.InvokeAsync();
     }
     #endregion
+
+    private async Task OnHighlightBlock(string cfiRange)
+    {
+        await JSRuntime.InvokeVoidAsync("onHighlightBlock", cfiRange);
+    }
 
     private void OnClickCollapse(int sidebarSelectedOption, bool close)
     {
@@ -480,7 +565,6 @@
         {
             objectRef = DotNetObjectReference.Create(this);
 
-
             OnSelectTextAction = OnSelectTextActionHandler;
             OnNavigatingPageAction = OnNavigatingPageActionHandler;
             OnChangeBackgroundAction = OnChangeBackgroundActionHandler;
@@ -500,7 +584,9 @@
                 Main = await JSRuntime.InvokeAsync<IJSObjectReference>(
                                "import", "./_content/BlazorEpubReader/main.js");
 
-                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, BackgroundColor, Highlights,FontSize,FontFace, objectRef).AsTask();
+
+                await Main.InvokeVoidAsync("epubfunc", EpubFile, LastPageCfi, BackgroundColor, Highlights, FontSize, FontFace, objectRef).AsTask();
+
 
             });
 

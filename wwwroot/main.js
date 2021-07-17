@@ -5,7 +5,9 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
     let currentPageNumber = 0;
     let isAnnotation = false;
     let FirstRender = 0;
+    
     var book = ePub(epubFile);
+    
     var rendition = book.renderTo("area", {
         width: "100%",
         height: "100%",
@@ -240,17 +242,18 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
                 selectedCfiRange = this.dataset.cfirange;
             }
         });
-        //$('.highlightBlock').on('click', function () {
 
-        //    selectedCfiRange = this.dataset.cfirange;
-        //});
-
+        
         if (LastPageCfi && fontface && fontsize && FirstRender < 2) {
             rendition.display(LastPageCfi);
             FirstRender++;
         }
 
     });
+    
+    window.onHighlightBlock = (cfiRange) => {
+        book.rendition.display(cfiRange);
+    };
     //#endregion
 
     //#region Apply a class to selected text
@@ -322,57 +325,6 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
             background = this.dataset.ebgcolor;
         }
     });
-    //$('#background-dark').on('click', function () {
-    //    background = "dark";
-       
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "background": "#343a40",
-    //            "color": "#f8f9fa"
-    //        }
-
-    //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "dark");
-    //});
-    //$('#background-secondary').on('click', function () {
-    //    background = "secondary";
-
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "background": "#6c757d",
-    //            "color": "#f8f9fa"
-    //        }
-
-    //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "secondary");
-
-    //});
-    //$('#background-light').on('click', function () {
-    //    background = "light";
-
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "background": "#f8f9fa",
-    //            "color": "#6c757d"
-    //        }
-
-    //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "light");
-
-    //});
-    //$('#background-white').on('click', function () {
-    //    background = "white";
-
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "background": "#fff",
-    //            "color": "#343a40"
-    //        }
-
-    //    }));
-    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnChangeBackgroundFromJs', "white");
-
-    //});
     //#endregion
 
     //#region selectHighlight
@@ -400,31 +352,6 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
 
         }
     });
-    //$('.highlight-select-option').on('click', function () {
-
-    //    var color = this.dataset.color;
-    //    var highlightselectoptions = document.querySelectorAll(".highlight-select-option");
-    //    highlightselectoptions.forEach(p => {
-    //        p.classList.remove("border");
-    //    });
-    //    this.classList.add("border");
-
-    //    //اگر حاشیه نویسی نبود
-    //    if (!isAnnotation) {
-    //        rendition.annotations.remove(selectedCfiRange);
-    //        rendition.annotations.highlight(selectedCfiRange, color, {}, (e) => {
-    //            console.log("highlight clicked", e.target);
-    //        });
-
-    //    }
-    //    var pageHref = rendition.location.start.href;
-
-    //    DotNet.invokeMethodAsync('BlazorEpubReader', 'OnHighlightTextFromJs', selectedCfiRange, color, selectedtext, pageHref, currentPageNumber, isAnnotation);
-
-
-
-    //});
-
     //#endregion
     var addAnnotations = document.querySelectorAll(".add-Annotation");
     addAnnotations.forEach(p => {
@@ -437,15 +364,6 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
             });
         }
     });
-    //$('.add-Annotation').on('click', function () {
-
-    //    isAnnotation = true;
-    //    selectedCfiRange = "";
-    //    var highlightselectoptions = document.querySelectorAll(".highlight-select-option");
-    //    highlightselectoptions.forEach(p => {
-    //        p.classList.remove("border");
-    //    });
-    //});
     var fontSizeOptions = document.querySelectorAll(".FontSizeOption");
     fontSizeOptions.forEach(p => {
         p.onclick = function () {
@@ -457,14 +375,6 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
             }));
         }
     });
-    //$('.FontSizeOption').on('click', function () {
-    //    fontsize = this.dataset.size;
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "font-size": `${this.dataset.size}px !important`
-    //        },
-    //    }));
-    //});
     var fontFaceOptions = document.querySelectorAll(".FontFaceOption");
     fontFaceOptions.forEach(p => {
         p.onclick = function () {
@@ -477,15 +387,5 @@ export function epubfunc(epubFile, LastPageCfi, background, highlights, fontsize
         }
     });
     document.body.style.overflow = "hidden";
-    //$('.FontFaceOption').on('click', function () {
-    //    fontface = this.dataset.fontface;
-    //    rendition.getContents().forEach(c => c.addStylesheetRules({
-    //        "body": {
-    //            "font-family": `${this.dataset.fontface} !important`
-    //        },
-    //    }));
-    //});
-
-   
 }
 
